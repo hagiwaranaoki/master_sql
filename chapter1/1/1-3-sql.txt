@@ -1,0 +1,21 @@
+SELECT
+	-- key列を指定。keyはMySQLの予約語なため、``をつけないとエラーになる
+	`key`
+FROM
+	-- Greatestsテーブルを指定
+	Greatests
+ORDER BY
+	-- keyカラムに対する並び替えのcase文開始
+	CASE `key`
+		-- Bの場合1番目にする
+		WHEN 'B' THEN 1
+		-- Aの場合2番目にする
+		WHEN 'A' THEN 2
+		-- Dの場合3番目にする
+		WHEN 'D' THEN 3
+		-- Cの場合4番目にする
+		WHEN 'C' THEN 4
+		-- それ以外の場合変えない
+		ELSE NULL 
+	END
+;

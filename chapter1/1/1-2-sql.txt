@@ -1,0 +1,65 @@
+SELECT
+	-- 性別カラムのcase文を開始
+	CASE sex 
+		-- 1の時男を返す
+		WHEN 1 THEN '男'
+		-- 2の時女を返す
+		WHEN 2 THEN '女'
+		-- それ以外の場合その他を返す
+		ELSE 'その他'
+	-- caseを終了して列名を性別にする
+	END AS 性別,
+	-- 人口の合計を求めて全国の名前を付ける
+	SUM(population) AS 全国,
+	SUM(
+		CASE 
+			-- pref_nameが徳島の場合人口の合計を加算
+			WHEN pref_name = '徳島' THEN population 
+			-- それ以外の場合加算しない
+			ELSE 0 
+		END
+	-- 列名に徳島の名前を付ける
+	) AS 徳島,
+	SUM(
+		CASE 
+			-- pref_nameが香川の場合人口の合計を加算
+			WHEN pref_name = '香川' THEN population 
+			-- それ以外の場合加算しない
+			ELSE 0 
+		END
+	-- 列名に香川の名前を付ける
+	) AS 香川,
+	SUM(
+		CASE 
+			-- pref_nameが愛媛の場合人口の合計を加算
+			WHEN pref_name = '愛媛' THEN population
+			-- それ以外の場合加算しない
+			ELSE 0 
+		END
+	-- 列の名前を愛媛にする
+	) AS 愛媛,
+	SUM(
+		CASE
+			-- pref_nameが高知の場合人口の合計を加算
+			WHEN pref_name = '高知' THEN population
+			-- それ以外の場合加算しない
+			ELSE 0 
+		END
+	-- 列名を高知にする
+	) AS 高知,
+	SUM(
+		CASE 
+			-- pref_nameが徳島、香川、愛媛、高知の場合人口を加算
+			WHEN pref_name IN ('徳島', '香川', '愛媛', '高知') THEN population
+			-- それ以外の場合加算しない 
+			ELSE 0 
+		END
+	-- 列名に四国（再掲）の名前を付ける
+	) AS 四国（再掲）
+FROM 
+	-- PopTbl2テーブルを指定
+	PopTbl2
+GROUP BY 
+	-- 性別でグループ分けする
+	sex
+;

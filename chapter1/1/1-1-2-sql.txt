@@ -1,0 +1,29 @@
+-- x,y,zの最大値を求める
+SELECT
+	-- key列を指定。keyはMySQLの予約語なため、``をつけないとエラーになる
+	`key`,
+	-- case文開始
+	CASE
+		WHEN
+			CASE
+				-- xがyよりも小さい場合yを返す
+				WHEN x < y THEN y 
+				-- そうでない場合xを返す
+				ELSE x 
+			-- 上の結果よりもzが大きい場合
+			END < z
+		-- zを返す
+		THEN z
+		-- それ以外の場合
+		ELSE 
+			CASE 
+				-- xよりもyのほうが大きい場合yを返す
+				WHEN x < y THEN y 
+				-- それ以外の場合xを返す
+				ELSE x 
+			END
+		-- その列名をgreatestとする
+		END AS greatest
+FROM 
+	-- Greatestテーブルを使用
+	Greatests;
