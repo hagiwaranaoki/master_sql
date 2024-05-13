@@ -1,0 +1,13 @@
+SELECT
+	-- serverカラムを指定
+	server,
+	-- sample_dateカラムを指定
+	sample_date,
+	-- パーティションを指定せずにload_valの合計値を算出して列の名前はsum_loadにする
+	SUM(load_val) OVER () AS sum_load
+FROM
+	-- ServerLoadSampleテーブルを指定
+	ServerLoadSample
+;
+
+パーティションの指定をしていないので、sum_loadがすべてのレコードのsum_loadの合計値で固定されて出力される
