@@ -1,0 +1,79 @@
+-- 一時的なテーブルを作成する
+CREATE TABLE
+	-- Temporary_Productsテーブルを作成し、選択したデータを挿入
+	Temporary_Products
+	-- SELECT文を使用して、特定の列を選択
+SELECT
+	-- nameカラムを指定
+	name,
+	-- priceカラムを指定
+	price,
+	-- 一意の連番でrow_numberという名前のカラムを作成
+	ROW_NUMBER() 
+	-- グループ化
+	OVER (
+		ORDER BY
+			-- nameカラムで並び替え
+			name, 
+			-- priceカラムで並び替え
+			price
+	-- row_numberの名前を付ける
+	) AS row_number
+-- FROM句でデータの取得元を指定
+FROM 
+(
+	-- サブクエリを開始
+	SELECT
+	-- nameカラムを指定
+	name, 
+	-- priceカラムを指定
+	price,
+	-- ROW_NUMBER()関数を使用して、各グループ内で行に番号を付ける
+	ROW_NUMBER() 
+	OVER (
+		-- PARTITION BY句でグループ化の基準を設定
+		PARTITION BY 
+		-- nameによってグループ化
+		name, 
+		-- priceによってグループ化
+		price 
+		ORDER BY
+			-- nameに基づいてソート
+			name
+	-- 結果の行番号をrow_numberとして出力
+	) AS row_number
+	FROM 
+		-- Productsテーブルからデータを取得
+		Products
+-- サブクエリの結果にRankedProductsというエイリアスを設定
+) AS RankedProducts
+WHERE
+	-- 行番号が1のデータのみを選択（重複を除外）
+	row_number = 1
+;
+
+-- productsテーブルからすべてのデータを削除
+DELETE FROM
+	-- productテーブルを指定
+	Products
+;
+
+-- 一時テーブルからデータを再挿入する
+INSERT INTO 
+	-- Productテーブルのnameカラムとpriceカラムを指定
+	Products (name, price)
+SELECT 
+	-- nameカラムを指定
+	name, 
+	-- priceカラムを指定
+	price
+FROM 
+	-- Temporary_Productsテーブルからデータを取得
+	Temporary_Products
+;
+
+-- 一時的に作ったテーブルを削除
+DROP TABLE
+	-- Temporary_Productsテーブルを指定
+	Temporary_Products
+;

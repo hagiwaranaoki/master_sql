@@ -1,0 +1,15 @@
+SELECT
+	-- P1の製品名をname_1として選択
+	P1.name AS name_1, 
+	-- P2の製品名をname_2として選択
+	P2.name AS name_2
+FROM
+	-- ProductsテーブルをP1として参照
+	Products P1 
+INNER JOIN 
+		-- 同じProductsテーブルをP2として内部結合
+		Products P2
+	ON
+		-- P1の製品名がP2の製品名と同じか、アルファベット順で後ろにくる場合に結合条件とする
+		P1.name >= P2.name
+;
