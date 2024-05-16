@@ -1,0 +1,33 @@
+SELECT 
+	-- num列を素数という列名で選択
+	num AS 素数
+FROM 
+	-- Numbersテーブルをnumberというエイリアスをつけて使用
+	Numbers number
+WHERE 
+		-- numが1より大きい
+		num > 1
+	AND 
+		-- numが他の数で割り切れない（素数の条件）ことを確認
+		NOT EXISTS
+		(
+			SELECT 
+				-- すべての列を使用
+				*
+			FROM 
+				-- Numbersテーブルをdivisorというエイリアスをつけて使用
+				Numbers divisor
+			WHERE 
+					-- 約数の数値が素数の数値の半分以下
+					divisor.num <= number.num / 2
+				AND 
+					-- 1は約数に含まない
+					divisor.num <> 1
+				AND 
+					-- 素数が約数で割り切れるかチェック
+					MOD(number.num, divisor.num) = 0
+		)
+ORDER BY 
+	-- 素数を昇順に並べ替え
+	num
+;

@@ -1,0 +1,40 @@
+SELECT 
+	-- すべての列を選択
+	*
+FROM 
+	-- Projectsテーブルをp1というエイリアスで使用する
+	Projects p1
+WHERE 
+	-- サブクエリの結果がすべて'○'である場合にのみ、p1の行を選択
+	'○' = ALL
+		(
+			SELECT 
+				-- CASE式を使用して、条件に応じて'○'または'×'を返す
+				CASE 
+					WHEN
+							-- step_nbrが1以下
+							step_nbr <= 1 
+						AND 
+							-- statusが'完了'の場合
+							status = '完了' 
+					-- '○'を返す
+					THEN '○'
+					WHEN 
+							-- -- step_nbrが1より大きい
+							step_nbr > 1 
+						AND 
+							-- statusが'待機'の場合
+							status = '待機' 
+					-- '○'を返す
+					THEN '○'
+					-- それ以外の場合、'×'を返す
+					ELSE '×' 
+				END
+			FROM 
+				-- Projectsテーブルをp2というエイリアスで参照し、p1と比較
+				Projects p2
+			WHERE 
+				-- p1のproject_idとp2のproject_idが同じ行を対象とする
+				p1.project_id = p2. project_id
+		)
+;

@@ -1,0 +1,12 @@
+SELECT 
+	CASE
+		-- レコードの総数と最大のシーケンス番号が異なる場合、歯抜けが存在する
+		WHEN COUNT(*) <> MAX(seq) THEN '歯抜けあり'
+		-- レコードの総数と最大のシーケンス番号が同じ場合、歯抜けはない
+		ELSE '歯抜けなし'
+	-- ここで表示する列名をgapとする
+	END AS gap
+FROM 
+	-- SeqTblを選択
+	SeqTbl
+;

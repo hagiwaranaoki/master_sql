@@ -1,0 +1,46 @@
+SELECT
+	-- 処理日を選択
+	prc_date,
+	-- A1の処理金額を選択
+	A1.prc_amt,
+	(
+		SELECT
+			CASE
+				-- 平均値が0以上の場合Floor関数で少数点を切り捨てる
+				WHEN AVG(prc_amt) >= 0 THEN FLOOR(AVG(prc_amt))
+				-- それ以外の場合小数点を切り上げる
+				ELSE CEILING(AVG(prc_amt))
+			END
+		FROM
+			-- AccountsテーブルをA2というエイリアスをつけて使用
+			Accounts A2
+		WHERE
+				-- A1の処理日がA2の処理日より後の場合
+				A1.prc_date >= A2.prc_date
+			AND
+				(
+					SELECT
+						-- レコード数をカウントして使用
+						COUNT(*)
+					FROM
+						-- AccountsテーブルをA3という名前で使用
+						Accounts A3
+					WHERE
+						-- A3の処理日が
+						A3.prc_date
+						BETWEEN 
+							-- A2の処理日と
+							A2.prc_date 
+						AND 
+							-- A1の処理日の間のものを抽出
+							A1.prc_date
+				-- 該当するレコードが3つ以下
+				) <= 3
+	) AS mvg_sum
+FROM
+	-- AccountsテーブルをA1というエイリアスをつけて使用
+	Accounts A1
+ORDER BY
+	-- 処理日の昇順で並び替え
+	prc_date
+;
