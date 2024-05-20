@@ -1,0 +1,57 @@
+SELECT 
+	-- MASTERビューのage_class列を選択
+	MASTER.age_class,
+	-- MASTERビューのsex_cd列を選択
+	MASTER.sex_cd,
+	 -- 集計関数SUMを使用して、条件に一致する人口の合計を計算
+	SUM(
+		CASE 
+			-- pref_nameが'青森'または'秋田'の場合、populationの値を使用
+			WHEN p.pref_name IN ('青森', '秋田') THEN p.population
+			-- それ以外の場合は0を使用
+			ELSE 0 
+		END
+	-- 東北地方の人口の合計を表す列名をpop_tohokuとする
+	) AS pop_tohoku,
+	-- 集計関数SUMを使用して、条件に一致する人口の合計を計算
+	SUM(
+		CASE 
+			-- pref_nameが'東京'または'千葉'の場合、populationの値を使用
+			WHEN p.pref_name IN ('東京', '千葉') THEN p.population 
+			-- それ以外の場合は0を使用
+			ELSE 0 
+		END
+	-- 関東地方の人口の合計を表す列名をpop_kantoとする
+	) AS pop_kanto
+FROM 
+	(
+		SELECT 
+			-- 重複を排除するためにDISTINCTを使用
+			DISTINCT 
+				-- TblAgeテーブルのage_class列を選択
+				a.age_class, 
+				-- TblSexテーブルのsex_cd列を選択
+				s.sex_cd
+		FROM
+			-- TblAgeテーブルにエイリアス'a'を付ける 
+			TblAge a 
+		CROSS JOIN
+			-- TblSexテーブルとクロス結合し、エイリアス's'を付ける 
+			TblSex s
+	-- サブクエリの結果に'MASTER'というエイリアスを付ける
+	) AS MASTER
+LEFT OUTER JOIN
+	-- TblPopテーブルを左外部結合し、エイリアス'p'を付ける
+	TblPop p
+ON 
+		-- MASTERビューのage_classとTblPopテーブルのage_classが一致する条件
+		MASTER.age_class = p.age_class
+	AND
+		-- MASTERビューのsex_cdとTblPopテーブルのsex_cdが一致する条件 
+		MASTER.sex_cd = p.sex_cd
+GROUP BY 
+	-- 集計結果をage_classごとにグループ化
+	MASTER.age_class,
+	-- 集計結果をsex_cdごとにグループ化 
+	MASTER.sex_cd
+;

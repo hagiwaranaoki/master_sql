@@ -1,0 +1,31 @@
+SELECT
+	-- 社員名を選択
+	EMP.employee,
+	(
+		CASE
+			-- child_1列がNULL以外なら1を返す
+			WHEN EMP.child_1 IS NOT NULL THEN 1 
+			-- child_1列がNULLなら0を返す
+			ELSE 0
+		END +
+		CASE
+			-- child_2列がNULL以外なら1を返す
+			WHEN EMP.child_2 IS NOT NULL THEN 1 
+			-- child_2列がNULLなら0を返す
+			ELSE 0
+		END +
+		CASE
+			-- child_3列がNULL以外なら1を返す
+			WHEN EMP.child_3 IS NOT NULL THEN 1
+			-- child_3列がNULLなら0を返す
+			ELSE 0
+		END
+	-- 扶養している子供の数を計算し、child_cntという列名で表示
+	) AS child_cnt 
+FROM
+	-- Personnelテーブルに対して処理を行う
+	Personnel EMP
+ORDER BY
+	-- 扶養している子供の数が多い順に結果を並び替える
+	child_cnt DESC
+;
