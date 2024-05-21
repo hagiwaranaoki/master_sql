@@ -1,0 +1,37 @@
+SELECT 
+	-- CASE分岐開始
+	CASE 
+		-- レコード数がtbl_Aとtbl_bで同じ場合、等しいを表示
+		WHEN
+				COUNT(*) = (
+						SELECT 
+							COUNT(*) 
+						FROM 
+							tbl_A
+				)
+			AND 
+				COUNT(*) = (
+						SELECT 
+							COUNT(*) 
+						FROM 
+							tbl_B
+				) THEN '等しい'
+		-- 違う場合異なるを表示
+		ELSE '異なる' 
+	-- result列として表示
+	END AS result
+FROM
+	(
+		-- tbl_Aとtbl_Bを重複行を排除して結合
+		SELECT 
+			*
+		FROM 
+			tbl_A
+		UNION
+			SELECT 
+				*
+			FROM 
+				tbl_B
+	-- 結合結果に別名TMPを付与
+	) TMP
+;

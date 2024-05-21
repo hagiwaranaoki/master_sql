@@ -1,0 +1,39 @@
+SELECT 
+	-- 社員カラムを選択
+	emp
+FROM
+	-- EmpSkillsテーブルをES1のエイリアスをつけて使用
+	EmpSkills ES1
+-- 存在しない行を抽出
+WHERE NOT EXISTS
+	(
+		SELECT 
+			-- skillカラムを選択
+			skill
+		FROM 
+			-- Skillsテーブルを指定
+			Skills
+		-- 差集合を求める
+		EXCEPT
+			SELECT 
+				-- skillカラムを選択
+				skill
+			FROM 
+				-- EmpSkillsテーブルをES2のエイリアスをつけて使用
+				EmpSkills ES2
+			WHERE
+				-- ES1のempカラムとES2のempカラムが等しいものを抽出
+				ES1.emp = ES2.emp
+	)
+GROUP BY 
+	-- empカラムでグループ化
+	emp
+HAVING 
+	-- 社員が持っているスキルの数がSkillsテーブルのスキルの数と等しいことを確認
+	COUNT(*) = (
+			SELECT 
+				COUNT(*)
+			FROM 
+				Skills
+	)
+;
