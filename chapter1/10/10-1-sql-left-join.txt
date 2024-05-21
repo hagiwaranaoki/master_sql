@@ -1,0 +1,22 @@
+SELECT 
+	-- sequenceテーブルのseqカラムを選択
+	seq.seq
+FROM 
+	-- sequenceテーブルをseqというエイリアスで指定
+	sequence seq
+LEFT JOIN 
+	-- seqtblテーブルをtblというエイリアスで指定し、LEFT JOINで結合
+	seqtbl tbl 
+ON 
+	-- sequenceテーブルのseqカラムとseqtblテーブルのseqカラムが一致する行を結合
+	seq.seq = tbl.seq
+WHERE 
+		-- sequenceテーブルのseqカラムが1から12の範囲内であることを指定
+		seq.seq BETWEEN 1 AND 12
+	AND 
+		-- seqtblテーブルのseqカラムがNULLであることを指定（欠番の条件）
+		tbl.seq IS NULL
+ORDER BY 
+	-- 結果をsequenceテーブルのseqカラムの昇順で並び替え
+	seq.seq
+;

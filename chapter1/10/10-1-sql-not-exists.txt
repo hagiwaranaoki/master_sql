@@ -1,0 +1,26 @@
+SELECT 
+	-- seqテーブルのseqカラムを指定
+	seq.seq
+FROM 
+	-- sequenceテーブルをseqというエイリアスをつけて使用
+	sequence seq
+WHERE 
+		-- seqテーブルの1~12を指定
+		seq.seq BETWEEN 1 AND 12
+	AND 
+		-- NOT EXISTSを使ってseqtblテーブルにseqテーブルのseqカラムの値が存在しないことを確認
+		NOT EXISTS (
+				SELECT 
+					-- seqtblテーブルから1を選択
+					1 
+				FROM 
+					-- seqtblテーブルをtblというエイリアスをつけて使用
+					seqtbl tbl
+				WHERE 
+					-- seqtblテーブルのseqカラムとseqテーブルのseqカラムが一致するかを確認
+					tbl.seq = seq.seq
+		)
+ORDER BY 
+	-- seqテーブルのseqカラムを昇順に並び替え
+	seq.seq
+;
