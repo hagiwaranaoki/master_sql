@@ -2,8 +2,8 @@ SELECT
 	-- 学部を選択
 	dpt
 FROM 
-	-- Studentsテーブルを選択
-	Students
+	-- studentsテーブルを選択
+	students
 GROUP BY 
 	-- 学部ごとにグループ化
 	dpt

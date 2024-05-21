@@ -47,8 +47,8 @@ FROM
 			-- この範囲をcountというエイリアスをつけて使用
 			) AS count
 		FROM 
-			-- Accountsテーブルを指定
-			Accounts
+			-- accountsテーブルを指定
+			accounts
 	-- TMPという名前でサブクエリを使用
 	) TMP
 ;

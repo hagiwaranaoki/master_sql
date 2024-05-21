@@ -1,16 +1,16 @@
 INSERT INTO 
-	-- class_Aテーブルのid列とname列に挿入
-	class_A (id, name)
+	-- class_aテーブルのid列とname列に挿入
+	class_a (id, name)
 SELECT 
-	-- class_Bテーブルのid列を選択
+	-- class_bテーブルのid列を選択
 	id, 
-	-- class_Bテーブルのname列を選択
+	-- class_bテーブルのname列を選択
 	name
 FROM 
-	-- class_Bテーブルから選択
-	class_B
+	-- class_bテーブルから選択
+	class_b
 -- 重複するキーが存在する場合は、以下の更新を実行
 ON DUPLICATE KEY UPDATE
-	-- class_Aテーブルのname列をclass_Bテーブルのname列で更新
-	class_A.name = class_B.name
+	-- class_aテーブルのname列をclass_bテーブルのname列で更新
+	class_a.name = class_b.name
 ;

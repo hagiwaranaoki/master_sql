@@ -7,6 +7,6 @@ SELECT
 	-- ここで表示する列名をgapとする
 	END AS gap
 FROM 
-	-- SeqTblを選択
-	SeqTbl
+	-- seqtblを選択
+	seqtbl
 ;

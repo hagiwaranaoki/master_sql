@@ -2,8 +2,8 @@ SELECT
 	-- num列を素数という列名で選択
 	num AS 素数
 FROM 
-	-- Numbersテーブルをnumberというエイリアスをつけて使用
-	Numbers number
+	-- numbersテーブルをnumberというエイリアスをつけて使用
+	numbers number
 WHERE 
 		-- numが1より大きい
 		num > 1
@@ -15,8 +15,8 @@ WHERE
 				-- すべての列を使用
 				*
 			FROM 
-				-- Numbersテーブルをdivisorというエイリアスをつけて使用
-				Numbers divisor
+				-- numbersテーブルをdivisorというエイリアスをつけて使用
+				numbers divisor
 			WHERE 
 					-- 約数の数値が素数の数値の半分以下
 					divisor.num <= number.num / 2

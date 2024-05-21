@@ -4,12 +4,12 @@ SELECT
 	-- P2の製品名をname_2として選択
 	P2.name AS name_2
 FROM
-	-- ProductsテーブルをP1として参照
-	Products P1 
+	-- productsテーブルをp1として参照
+	products p1 
 INNER JOIN 
-		-- 同じProductsテーブルをP2として内部結合
-		Products P2
+		-- 同じproductsテーブルをp2として内部結合
+		products p2
 	ON
-		-- P1の製品名がP2の製品名と同じか、アルファベット順で後ろにくる場合に結合条件とする
-		P1.name >= P2.name
+		-- p1の製品名がp2の製品名と同じか、アルファベット順で後ろにくる場合に結合条件とする
+		p1.name >= p2.name
 ;

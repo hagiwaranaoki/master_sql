@@ -27,7 +27,7 @@ SELECT
 						accounts a3
 					WHERE 
 						-- a3の処理日が
-						A3.prc_date
+						a3.prc_date
 						-- a2の処理日とa1の処理日の間にあるものが
 						BETWEEN a2.prc_date AND a1.prc_date 
 				-- 3つ以下の場合

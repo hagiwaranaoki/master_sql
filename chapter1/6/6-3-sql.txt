@@ -1,27 +1,27 @@
 SELECT 
 	-- 店舗名カラムを選択
-	SI.shop,
+	si.shop,
 	-- 各店舗のアイテム数をカウント
-	COUNT(SI.item) AS my_item_cnt,
+	COUNT(si.item) AS my_item_cnt,
 	(
 		SELECT
 			-- 全アイテムの総数をサブクエリで取得 
 			COUNT(item) 
 		FROM 
-			-- Itemsテーブルを選択
-			Items
+			-- itemsテーブルを選択
+			items
 	-- 全アイテム数から各店舗のアイテム数を引いた差
-	) - COUNT(SI.item) AS diff_cnt
+	) - COUNT(si.item) AS diff_cnt
 FROM 
-	-- ShopItemsテーブルからデータを取得
-	ShopItems SI 
+	-- shopitemsテーブルからデータを取得
+	shopitems si
 INNER JOIN 
-	-- Itemsテーブルと内部結合
-	Items I
+	-- itemsテーブルと内部結合
+	items i
 ON 
 	-- アイテムで結合条件を指定
-	SI.item = I.item
+	si.item = i.item
 GROUP BY 
 	-- 店舗ごとにグループ化
-	SI.shop
+	si.shop
 ;

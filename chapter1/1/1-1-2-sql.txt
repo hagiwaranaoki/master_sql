@@ -26,4 +26,4 @@ SELECT
 		END AS greatest
 FROM 
 	-- Greatestテーブルを使用
-	Greatests;
+	greatests;

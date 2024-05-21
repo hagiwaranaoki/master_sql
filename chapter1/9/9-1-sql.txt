@@ -1,20 +1,20 @@
 SELECT 
 	-- CASE分岐開始
 	CASE 
-		-- レコード数がtbl_Aとtbl_bで同じ場合、等しいを表示
+		-- レコード数がtbl_aとtbl_bで同じ場合、等しいを表示
 		WHEN
 				COUNT(*) = (
 						SELECT 
 							COUNT(*) 
 						FROM 
-							tbl_A
+							tbl_a
 				)
 			AND 
 				COUNT(*) = (
 						SELECT 
 							COUNT(*) 
 						FROM 
-							tbl_B
+							tbl_b
 				) THEN '等しい'
 		-- 違う場合異なるを表示
 		ELSE '異なる' 
@@ -22,16 +22,16 @@ SELECT
 	END AS result
 FROM
 	(
-		-- tbl_Aとtbl_Bを重複行を排除して結合
+		-- tbl_aとtbl_bを重複行を排除して結合
 		SELECT 
 			*
 		FROM 
-			tbl_A
+			tbl_a
 		UNION
 			SELECT 
 				*
 			FROM 
-				tbl_B
+				tbl_b
 	-- 結合結果に別名TMPを付与
 	) TMP
 ;

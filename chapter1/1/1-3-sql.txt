@@ -2,8 +2,8 @@ SELECT
 	-- key列を指定。keyはMySQLの予約語なため、``をつけないとエラーになる
 	`key`
 FROM
-	-- Greatestsテーブルを指定
-	Greatests
+	-- greatestsテーブルを指定
+	greatests
 ORDER BY
 	-- keyカラムに対する並び替えのcase文開始
 	CASE `key`

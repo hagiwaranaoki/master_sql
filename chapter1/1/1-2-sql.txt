@@ -57,8 +57,8 @@ SELECT
 	-- 列名に四国（再掲）の名前を付ける
 	) AS 四国（再掲）
 FROM 
-	-- PopTbl2テーブルを指定
-	PopTbl2
+	-- poptbl2テーブルを指定
+	poptbl2
 GROUP BY 
 	-- 性別でグループ分けする
 	sex

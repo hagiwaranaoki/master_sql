@@ -3,16 +3,16 @@ SELECT DISTINCT
 	-- key列を選択
 	t1.key
 FROM 
-	-- ArrayTbl2テーブルをt1として使用
-	ArrayTbl2 t1
+	-- arraytbl2テーブルをt1として使用
+	arraytbl2 t1
 -- t1の各行に対して、次のサブクエリを実行
 WHERE NOT EXISTS (
     SELECT 
 	-- 1を選択するダミーのサブクエリ
 	1
     FROM 
-	-- ArrayTbl2テーブルをt2として使用
-	ArrayTbl2 t2
+	-- arraytbl2テーブルをt2として使用
+	arraytbl2 t2
     WHERE 
 		-- t2のkeyがt1のkeyと同じ行を対象とする
 		t2.key = t1.key 
@@ -33,8 +33,8 @@ SELECT
 	-- key列を選択
 	`key`
 FROM 
-	-- ArrayTbl2テーブルを選択
-	ArrayTbl2
+	-- arraytbl2テーブルを選択
+	arraytbl2
 GROUP BY 
 	-- key列でグループ化する
 	`key`

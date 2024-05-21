@@ -2,8 +2,8 @@ SELECT
 	-- すべての列を選択
 	*
 FROM 
-	-- Projectsテーブルをp1というエイリアスで使用する
-	Projects p1
+	-- projectsテーブルをp1というエイリアスで使用する
+	projects p1
 WHERE 
 	-- サブクエリの結果がすべて'○'である場合にのみ、p1の行を選択
 	'○' = ALL
@@ -31,8 +31,8 @@ WHERE
 					ELSE '×' 
 				END
 			FROM 
-				-- Projectsテーブルをp2というエイリアスで参照し、p1と比較
-				Projects p2
+				-- projectsテーブルをp2というエイリアスで参照し、p1と比較
+				projects p2
 			WHERE 
 				-- p1のproject_idとp2のproject_idが同じ行を対象とする
 				p1.project_id = p2. project_id

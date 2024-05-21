@@ -23,8 +23,8 @@ SELECT
 	-- 扶養している子供の数を計算し、child_cntという列名で表示
 	) AS child_cnt 
 FROM
-	-- Personnelテーブルに対して処理を行う
-	Personnel EMP
+	-- personnelテーブルに対して処理を行う
+	personnel EMP
 ORDER BY
 	-- 扶養している子供の数が多い順に結果を並び替える
 	child_cnt DESC

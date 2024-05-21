@@ -2,8 +2,8 @@ SELECT
 	-- 社員カラムを選択
 	emp
 FROM
-	-- EmpSkillsテーブルをES1のエイリアスをつけて使用
-	EmpSkills ES1
+	-- empskillsテーブルをes1のエイリアスをつけて使用
+	empskills es1
 -- 存在しない行を抽出
 WHERE NOT EXISTS
 	(
@@ -11,29 +11,29 @@ WHERE NOT EXISTS
 			-- skillカラムを選択
 			skill
 		FROM 
-			-- Skillsテーブルを指定
-			Skills
+			-- skillsテーブルを指定
+			skills
 		-- 差集合を求める
 		EXCEPT
 			SELECT 
 				-- skillカラムを選択
 				skill
 			FROM 
-				-- EmpSkillsテーブルをES2のエイリアスをつけて使用
-				EmpSkills ES2
+				-- empskillsテーブルをes2のエイリアスをつけて使用
+				empskills es2
 			WHERE
-				-- ES1のempカラムとES2のempカラムが等しいものを抽出
-				ES1.emp = ES2.emp
+				-- es1のempカラムとes2のempカラムが等しいものを抽出
+				es1.emp = es2.emp
 	)
 GROUP BY 
 	-- empカラムでグループ化
 	emp
 HAVING 
-	-- 社員が持っているスキルの数がSkillsテーブルのスキルの数と等しいことを確認
+	-- 社員が持っているスキルの数がskillsテーブルのスキルの数と等しいことを確認
 	COUNT(*) = (
 			SELECT 
 				COUNT(*)
 			FROM 
-				Skills
+				skills
 	)
 ;

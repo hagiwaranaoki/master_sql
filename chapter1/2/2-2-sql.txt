@@ -7,7 +7,7 @@ SELECT
 	SUM(load_val) OVER (PARTITION BY server) AS sum_load
 FROM
 	-- ServerLoadSampleテーブルを指定
-	ServerLoadSample
+	serverloadsample
 ;
 
 serverでパーティションを区切って合計値を求めているため、serverごとの負荷量の合計値が出力される

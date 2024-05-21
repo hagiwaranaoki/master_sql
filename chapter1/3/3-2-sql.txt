@@ -1,7 +1,7 @@
 -- 一時的なテーブルを作成する
 CREATE TABLE
-	-- Temporary_Productsテーブルを作成し、選択したデータを挿入
-	Temporary_Products
+	-- temporary_productsテーブルを作成し、選択したデータを挿入
+	temporary_products
 	-- SELECT文を使用して、特定の列を選択
 SELECT
 	-- nameカラムを指定
@@ -43,8 +43,8 @@ FROM
 	-- 結果の行番号をrow_numberとして出力
 	) AS row_number
 	FROM 
-		-- Productsテーブルからデータを取得
-		Products
+		-- productsテーブルからデータを取得
+		products
 -- サブクエリの結果にRankedProductsというエイリアスを設定
 ) AS RankedProducts
 WHERE
@@ -55,25 +55,25 @@ WHERE
 -- productsテーブルからすべてのデータを削除
 DELETE FROM
 	-- productテーブルを指定
-	Products
+	products
 ;
 
 -- 一時テーブルからデータを再挿入する
 INSERT INTO 
-	-- Productテーブルのnameカラムとpriceカラムを指定
-	Products (name, price)
+	-- productテーブルのnameカラムとpriceカラムを指定
+	products (name, price)
 SELECT 
 	-- nameカラムを指定
 	name, 
 	-- priceカラムを指定
 	price
 FROM 
-	-- Temporary_Productsテーブルからデータを取得
-	Temporary_Products
+	-- temporary_productsテーブルからデータを取得
+	temporary_products
 ;
 
 -- 一時的に作ったテーブルを削除
 DROP TABLE
-	-- Temporary_Productsテーブルを指定
-	Temporary_Products
+	-- temporary_productsテーブルを指定
+	temporary_products
 ;
