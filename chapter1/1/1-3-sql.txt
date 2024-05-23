@@ -1,21 +1,18 @@
+-- key列をBADCの順番で並び替える
 SELECT
-	-- key列を指定。keyはMySQLの予約語なため、``をつけないとエラーになる
 	`key`
 FROM
-	-- greatestsテーブルを指定
 	greatests
 ORDER BY
-	-- keyカラムに対する並び替えのcase文開始
 	CASE `key`
-		-- Bの場合1番目にする
+		-- 1番目にする
 		WHEN 'B' THEN 1
-		-- Aの場合2番目にする
+		-- 2番目にする
 		WHEN 'A' THEN 2
-		-- Dの場合3番目にする
+		-- 3番目にする
 		WHEN 'D' THEN 3
-		-- Cの場合4番目にする
+		-- 4番目にする
 		WHEN 'C' THEN 4
-		-- それ以外の場合変えない
-		ELSE NULL 
+		ELSE NULL
 	END
 ;

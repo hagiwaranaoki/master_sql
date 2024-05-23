@@ -1,40 +1,27 @@
+-- ステップ番号が1以下でステータスが「完了」、またはステップ番号が1より大きくステータスが「待機」という条件を満たすプロジェクトをprojectsテーブルから選択
 SELECT 
-	-- すべての列を選択
 	*
 FROM 
-	-- projectsテーブルをp1というエイリアスで使用する
 	projects p1
 WHERE 
-	-- サブクエリの結果がすべて'○'である場合にのみ、p1の行を選択
-	'○' = ALL
-		(
-			SELECT 
-				-- CASE式を使用して、条件に応じて'○'または'×'を返す
-				CASE 
-					WHEN
-							-- step_nbrが1以下
-							step_nbr <= 1 
-						AND 
-							-- statusが'完了'の場合
-							status = '完了' 
-					-- '○'を返す
-					THEN '○'
-					WHEN 
-							-- -- step_nbrが1より大きい
-							step_nbr > 1 
-						AND 
-							-- statusが'待機'の場合
-							status = '待機' 
-					-- '○'を返す
-					THEN '○'
-					-- それ以外の場合、'×'を返す
-					ELSE '×' 
-				END
-			FROM 
-				-- projectsテーブルをp2というエイリアスで参照し、p1と比較
-				projects p2
-			WHERE 
-				-- p1のproject_idとp2のproject_idが同じ行を対象とする
-				p1.project_id = p2. project_id
-		)
+	'○' = ALL(
+		SELECT
+			CASE 
+				WHEN
+						step_nbr <= 1 
+					AND 
+						status = '完了' 
+				THEN '○'
+				WHEN
+						step_nbr > 1 
+					AND 
+						status = '待機'
+				THEN '○'
+				ELSE '×' 
+			END
+		FROM
+			projects p2
+		WHERE 
+			p1.project_id = p2. project_id
+	)
 ;

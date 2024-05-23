@@ -1,45 +1,31 @@
-SELECT 
-	-- 処理日を選択
-	prc_date, 
-	-- a1の処理金額を選択
+-- 相関サブクエリを用いて3件の移動平均を求め、3件に満たない場合はNULL結果をNULLとする
+SELECT
+	prc_date,
 	a1.prc_amt,
 	(
 		SELECT 
 			CASE
-				-- 処理金額の平均が0以上の場合FLOOR関数で小数点切り捨て
 				WHEN AVG(prc_amt) >= 0 THEN FLOOR(AVG(prc_amt))
-				-- それ以外の場合CEILING関数で切り上げ
 				ELSE CEILING(AVG(prc_amt))
 			END
-		FROM 
-			-- accountsテーブルをa2というエイリアスで使用する
+		FROM
 			accounts a2
 		WHERE 
-				-- a1の処理日がa2の処理日より後の場合
 				a1.prc_date >= a2.prc_date
 			AND 
 				(
-					SELECT 
-						-- レコード数をカウント
+					SELECT
 						COUNT(*)
-					FROM 
-						-- accountsテーブルをa3というエイリアスをつけて使用
+					FROM
 						accounts a3
 					WHERE 
-						-- a3の処理日が
-						a3.prc_date
-						-- a2の処理日とa1の処理日の間にあるものが
-						BETWEEN a2.prc_date AND a1.prc_date 
-				-- 3つ以下の場合
+						a3.prc_date BETWEEN a2.prc_date AND a1.prc_date 
 				) <= 3
 		HAVING 
-			-- サブクエリで得たレコード数が3つの場合
 			COUNT(*) = 3
 	) AS mvg_sum
-FROM 
-	-- accountsテーブルをa1というエイリアスをつけて使用
+FROM
 	accounts a1
 ORDER BY 
-	-- 処理日の昇順で並び替え
 	prc_date
 ;

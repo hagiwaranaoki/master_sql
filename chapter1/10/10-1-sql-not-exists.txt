@@ -1,26 +1,19 @@
-SELECT 
-	-- seqテーブルのseqカラムを指定
+-- sequenceテーブルの数値がseqtblテーブルに存在しないことを確認するために、NOT EXISTSを使用
+SELECT
 	seq.seq
-FROM 
-	-- sequenceテーブルをseqというエイリアスをつけて使用
+FROM
 	sequence seq
-WHERE 
-		-- seqテーブルの1~12を指定
+WHERE
 		seq.seq BETWEEN 1 AND 12
-	AND 
-		-- NOT EXISTSを使ってseqtblテーブルにseqテーブルのseqカラムの値が存在しないことを確認
+	AND
 		NOT EXISTS (
-				SELECT 
-					-- seqtblテーブルから1を選択
-					1 
-				FROM 
-					-- seqtblテーブルをtblというエイリアスをつけて使用
-					seqtbl tbl
-				WHERE 
-					-- seqtblテーブルのseqカラムとseqテーブルのseqカラムが一致するかを確認
-					tbl.seq = seq.seq
+			SELECT
+				1 
+			FROM
+				seqtbl tbl
+			WHERE
+				tbl.seq = seq.seq
 		)
-ORDER BY 
-	-- seqテーブルのseqカラムを昇順に並び替え
+ORDER BY
 	seq.seq
 ;

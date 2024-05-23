@@ -1,7 +1,6 @@
-SELECT 
-	-- CASE分岐開始
-	CASE 
-		-- レコード数がtbl_aとtbl_bで同じ場合、等しいを表示
+-- tbl_aとtbl_bの全行をUNIONで結合し、その結合結果の行数が各テーブルの行数と一致するかどうかをチェックする
+SELECT
+	CASE
 		WHEN
 				COUNT(*) = (
 						SELECT 
@@ -16,13 +15,10 @@ SELECT
 						FROM 
 							tbl_b
 				) THEN '等しい'
-		-- 違う場合異なるを表示
-		ELSE '異なる' 
-	-- result列として表示
+		ELSE '異なる'
 	END AS result
 FROM
 	(
-		-- tbl_aとtbl_bを重複行を排除して結合
 		SELECT 
 			*
 		FROM 
@@ -32,6 +28,5 @@ FROM
 				*
 			FROM 
 				tbl_b
-	-- 結合結果に別名TMPを付与
 	) TMP
 ;

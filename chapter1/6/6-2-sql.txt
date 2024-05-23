@@ -1,23 +1,19 @@
+-- 全員が9月中に提出済みの学部を表示する
 SELECT 
-	-- 学部を選択
 	dpt
 FROM 
-	-- studentsテーブルを選択
 	students
 GROUP BY 
-	-- 学部ごとにグループ化
 	dpt
 HAVING 
-	-- 各学部のレコード総数と、9月に提出されたレコードの数が一致するかどうかを確認
 		COUNT(*) = SUM(
-				CASE
-					-- 9月の場合に1を返す
-					WHEN MONTH(sbmt_date) = 9 THEN 1
-					-- それ以外の場合に0を返す
-					ELSE 0
-				END
-			)
-	AND 
-		-- 提出日が記録されていない学生がいない学部のみを対象にする
+			CASE
+				-- 9月の場合に1を返す
+				WHEN MONTH(sbmt_date) = 9 THEN 1
+				-- それ以外の場合に0を返す
+				ELSE 0
+			END
+		)
+	AND
 		COUNT(sbmt_date) = COUNT(*)
 ;

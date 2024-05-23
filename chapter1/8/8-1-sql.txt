@@ -1,57 +1,36 @@
-SELECT 
-	-- masterビューのage_class列を選択
+-- tblageとtblsexの全ての年齢区分と性別の組み合わせを生成し、それを基にtblpopテーブルから東北地方（青森、秋田）と関東地方（東京、千葉）の人口を集計し、年齢区分と性別ごとに表示
+SELECT
 	master.age_class,
-	-- masterビューのsex_cd列を選択
 	master.sex_cd,
-	 -- 集計関数SUMを使用して、条件に一致する人口の合計を計算
 	SUM(
-		CASE 
-			-- pref_nameが'青森'または'秋田'の場合、populationの値を使用
+		CASE
 			WHEN p.pref_name IN ('青森', '秋田') THEN p.population
-			-- それ以外の場合は0を使用
-			ELSE 0 
+			ELSE 0
 		END
-	-- 東北地方の人口の合計を表す列名をpop_tohokuとする
 	) AS pop_tohoku,
-	-- 集計関数SUMを使用して、条件に一致する人口の合計を計算
 	SUM(
-		CASE 
-			-- pref_nameが'東京'または'千葉'の場合、populationの値を使用
-			WHEN p.pref_name IN ('東京', '千葉') THEN p.population 
-			-- それ以外の場合は0を使用
+		CASE
+			WHEN p.pref_name IN ('東京', '千葉') THEN p.population
 			ELSE 0 
 		END
-	-- 関東地方の人口の合計を表す列名をpop_kantoとする
 	) AS pop_kanto
-FROM 
+FROM
 	(
-		SELECT 
-			-- 重複を排除するためにDISTINCTを使用
-			DISTINCT 
-				-- tblageテーブルのage_class列を選択
-				a.age_class, 
-				-- tblsexテーブルのsex_cd列を選択
-				s.sex_cd
+		SELECT DISTINCT 
+			a.age_class, 
+			s.sex_cd
 		FROM
-			-- tblageテーブルにエイリアス'a'を付ける 
 			tblage a 
 		CROSS JOIN
-			-- tblsexテーブルとクロス結合し、エイリアス's'を付ける 
 			tblsex s
-	-- サブクエリの結果に'master'というエイリアスを付ける
 	) AS master
 LEFT OUTER JOIN
-	-- tblpopテーブルを左外部結合し、エイリアス'p'を付ける
 	tblpop p
 ON 
-		-- masterビューのage_classとtblpopテーブルのage_classが一致する条件
 		master.age_class = p.age_class
 	AND
-		-- masterビューのsex_cdとtblpopテーブルのsex_cdが一致する条件 
 		master.sex_cd = p.sex_cd
-GROUP BY 
-	-- 集計結果をage_classごとにグループ化
+GROUP BY
 	master.age_class,
-	-- 集計結果をsex_cdごとにグループ化 
 	master.sex_cd
 ;

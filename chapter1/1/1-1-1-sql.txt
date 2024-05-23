@@ -1,15 +1,10 @@
 -- xとyの最大値を取得
 SELECT 
-	-- key列を指定。keyはMySQLの予約語なため、``をつけないとエラーになる
 	`key`,
        CASE 
-		-- yがxよりも大きい場合yを返す
 		WHEN x < y THEN y
-		-- それ以外の場合xを返す
 		ELSE x
-	-- 列名をgreatestに指定
 	END AS greatest
 FROM 
-	-- Greatestテーブルを使用
 	greatests
 ;

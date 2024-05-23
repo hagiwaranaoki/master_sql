@@ -1,54 +1,33 @@
+-- ウィンドウ関数を用いて3件の移動平均を求め、3件に満たない場合はNULL結果をNULLとする
 SELECT
-	-- 処理日を選択
 	prc_date,
-	-- 処理金額を選択
 	prc_amt,
 	CASE
-		-- レコード数が3より少ない場合はNULLにする
 		WHEN count < 3 THEN NULL
 	ELSE
 		CASE
-			-- 処理金額の平均が0以上の時FLOOR関数で小数点切捨て
 			WHEN mvg_avg >= 0 THEN FLOOR(mvg_avg)
-			-- それ以外の時は小数点切り上げ
 			ELSE CEILING(mvg_avg)
 		END
-	-- 移動平均をmvg_avgという列名で表示
 	END AS mvg_avg
 FROM
 	(
 		SELECT
-			-- 処理日を選択
 			prc_date,
-			-- 処理金額を選択
 			prc_amt,
-			-- 処理金額の平均を求める
 			AVG(prc_amt)
-		-- 範囲指定をする
-		OVER
-			(
+			OVER(
 				ORDER BY
-					-- 処理日を昇順で並び替え
 					prc_date
-				-- 現在の行と、その直前の2行を含めてウィンドウを定義
 				ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-			-- このウィンドウをmvg_avgで扱う
 			) mvg_avg,
-		-- レコード数をカウントする
-		COUNT(*)
-		-- 範囲指定をする
-		OVER
-			(
+			COUNT(*)
+			OVER(
 				ORDER BY
-					-- 処理日を昇順で並び替え
 					prc_date
-				-- 現在の行と、その直前の2行を含めてウィンドウを定義
 				ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-			-- この範囲をcountというエイリアスをつけて使用
 			) AS count
 		FROM 
-			-- accountsテーブルを指定
 			accounts
-	-- TMPという名前でサブクエリを使用
 	) TMP
 ;

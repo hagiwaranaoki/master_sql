@@ -1,79 +1,51 @@
--- 一時的なテーブルを作成する
+-- 一時的なテーブルtemporary_productsを作成し、productsテーブルから重複を排除したデータを格納する
 CREATE TABLE
-	-- temporary_productsテーブルを作成し、選択したデータを挿入
 	temporary_products
-	-- SELECT文を使用して、特定の列を選択
 SELECT
-	-- nameカラムを指定
 	name,
-	-- priceカラムを指定
 	price,
-	-- 一意の連番でrow_numberという名前のカラムを作成
 	ROW_NUMBER() 
-	-- グループ化
 	OVER (
 		ORDER BY
-			-- nameカラムで並び替え
 			name, 
-			-- priceカラムで並び替え
 			price
-	-- row_numberの名前を付ける
 	) AS row_number
--- FROM句でデータの取得元を指定
 FROM 
 (
-	-- サブクエリを開始
 	SELECT
-	-- nameカラムを指定
-	name, 
-	-- priceカラムを指定
-	price,
-	-- ROW_NUMBER()関数を使用して、各グループ内で行に番号を付ける
-	ROW_NUMBER() 
-	OVER (
-		-- PARTITION BY句でグループ化の基準を設定
-		PARTITION BY 
-		-- nameによってグループ化
 		name, 
-		-- priceによってグループ化
-		price 
-		ORDER BY
-			-- nameに基づいてソート
-			name
-	-- 結果の行番号をrow_numberとして出力
-	) AS row_number
+		price,
+		ROW_NUMBER() 
+		OVER (
+			PARTITION BY 
+				name, 
+				price 
+			ORDER BY
+				name
+		) AS row_number
 	FROM 
-		-- productsテーブルからデータを取得
 		products
--- サブクエリの結果にRankedProductsというエイリアスを設定
 ) AS RankedProducts
 WHERE
-	-- 行番号が1のデータのみを選択（重複を除外）
 	row_number = 1
 ;
 
--- productsテーブルからすべてのデータを削除
+-- productsテーブルの全データを削除する
 DELETE FROM
-	-- productテーブルを指定
 	products
 ;
 
--- 一時テーブルからデータを再挿入する
+-- 一時的なテーブルから一意のデータをproductsテーブルに挿入
 INSERT INTO 
-	-- productテーブルのnameカラムとpriceカラムを指定
 	products (name, price)
-SELECT 
-	-- nameカラムを指定
+SELECT
 	name, 
-	-- priceカラムを指定
 	price
 FROM 
-	-- temporary_productsテーブルからデータを取得
 	temporary_products
 ;
 
--- 一時的に作ったテーブルを削除
+-- 一時的なテーブルtemporary_productsを削除する
 DROP TABLE
-	-- temporary_productsテーブルを指定
 	temporary_products
 ;

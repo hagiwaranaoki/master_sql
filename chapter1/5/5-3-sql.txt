@@ -1,33 +1,27 @@
+-- numbersテーブルの中から素数を出して昇順に並べる
 SELECT 
-	-- num列を素数という列名で選択
 	num AS 素数
 FROM 
-	-- numbersテーブルをnumberというエイリアスをつけて使用
 	numbers number
-WHERE 
-		-- numが1より大きい
+WHERE
+		-- 1より上の数値
 		num > 1
 	AND 
-		-- numが他の数で割り切れない（素数の条件）ことを確認
-		NOT EXISTS
-		(
+		NOT EXISTS(
 			SELECT 
-				-- すべての列を使用
 				*
 			FROM 
-				-- numbersテーブルをdivisorというエイリアスをつけて使用
 				numbers divisor
-			WHERE 
-					-- 約数の数値が素数の数値の半分以下
+			WHERE
+					-- 素数の判定のため、割る数はnumの半分以下である必要がある
 					divisor.num <= number.num / 2
-				AND 
-					-- 1は約数に含まない
+				AND
+					-- 1は除外する
 					divisor.num <> 1
 				AND 
-					-- 素数が約数で割り切れるかチェック
+					-- numがdivisor.numで割り切れる場合は素数ではない
 					MOD(number.num, divisor.num) = 0
 		)
-ORDER BY 
-	-- 素数を昇順に並べ替え
+ORDER BY
 	num
 ;

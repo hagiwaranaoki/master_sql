@@ -1,50 +1,38 @@
--- EXISTSを使った選択
+-- valがNULLまたは1以外の値を持つ行が存在しないキーを選択する
 SELECT DISTINCT
-	-- key列を選択
 	t1.key
 FROM 
-	-- arraytbl2テーブルをt1として使用
 	arraytbl2 t1
--- t1の各行に対して、次のサブクエリを実行
 WHERE NOT EXISTS (
     SELECT 
-	-- 1を選択するダミーのサブクエリ
 	1
     FROM 
-	-- arraytbl2テーブルをt2として使用
 	arraytbl2 t2
     WHERE 
-		-- t2のkeyがt1のkeyと同じ行を対象とする
 		t2.key = t1.key 
 	AND 
-	(
-			-- t2のvalがNULLな行が存在するかチェック
-			t2.val IS NULL 
-		OR 
-			---- t2のvalが1ではない行が存在するかチェック
-			t2.val <> 1
-	)
+		(
+				t2.val IS NULL 
+			OR 
+				t2.val <> 1
+		)
 )
 ;
 
 
--- EXISTSを使わない方法
+-- keyごとにグループ化し、valの最小値と最大値が1であり、かつvalにNULLが含まれていないキーを選択する
 SELECT 
-	-- key列を選択
 	`key`
 FROM 
-	-- arraytbl2テーブルを選択
 	arraytbl2
 GROUP BY 
-	-- key列でグループ化する
 	`key`
 HAVING 
-		-- グループ内の総行数とNULLでないvalの数が等しいことを確認
 		COUNT(*) = COUNT(val) 
 	AND 
-		-- グループ内のvalの最小値が1であることを確認
+		-- valの最小値が1
 		MIN(val) = 1 
 	AND 
-		-- グループ内のvalの最大値も1であることを確認
+		-- valの最大値が1
 		MAX(val) = 1
 ;

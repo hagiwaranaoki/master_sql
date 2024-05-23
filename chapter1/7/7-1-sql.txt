@@ -1,46 +1,29 @@
+-- 相関サブクエリを使用して移動平均を求める
 SELECT
-	-- 処理日を選択
 	prc_date,
-	-- a1の処理金額を選択
 	a1.prc_amt,
 	(
 		SELECT
 			CASE
-				-- 平均値が0以上の場合Floor関数で少数点を切り捨てる
 				WHEN AVG(prc_amt) >= 0 THEN FLOOR(AVG(prc_amt))
-				-- それ以外の場合小数点を切り上げる
 				ELSE CEILING(AVG(prc_amt))
 			END
 		FROM
-			-- accountsテーブルをa2というエイリアスをつけて使用
 			accounts a2
 		WHERE
-				-- a1の処理日がa2の処理日より後の場合
 				a1.prc_date >= a2.prc_date
 			AND
 				(
 					SELECT
-						-- レコード数をカウントして使用
 						COUNT(*)
 					FROM
-						-- accountsテーブルをa3という名前で使用
 						accounts a3
 					WHERE
-						-- a3の処理日が
-						a3.prc_date
-						BETWEEN 
-							-- a2の処理日と
-							a2.prc_date 
-						AND 
-							-- a1の処理日の間のものを抽出
-							a1.prc_date
-				-- 該当するレコードが3つ以下
+						a3.prc_date BETWEEN a2.prc_date AND a1.prc_date
 				) <= 3
 	) AS mvg_sum
 FROM
-	-- accountsテーブルをA1というエイリアスをつけて使用
 	accounts a1
 ORDER BY
-	-- 処理日の昇順で並び替え
 	prc_date
 ;

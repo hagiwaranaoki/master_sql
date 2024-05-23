@@ -1,48 +1,35 @@
 -- 連続する座席を表す変数に任意の値を設定
 SET @head_cnt = 3;
 
-SELECT 
-	-- 開始座席番号を取得
+-- Seats2テーブルから連続する空席の範囲を抽出し、連続する空席の開始座席と終了座席を表示
+SELECT
 	S1.seat AS start_seat,
-	-- 座席番号の範囲を表す記号 '～'
 	'～' ,
-	-- 終了座席番号を取得
 	S2.seat AS end_seat
 FROM
-	-- Seats2テーブルに別名S1を付けて開始座席を表す
 	Seats2 S1
 JOIN
-	-- Seats2テーブルに別名S2を付けて終了座席を表す
 	Seats2 S2
 ON
-		-- 開始座席から@head_cnt - 1だけ離れた座席を終了座席とする
 		S2.seat = S1.seat + (@head_cnt - 1)
 	AND
-		-- 開始座席と終了座席が同じline_idであることを確認
 		S2.line_id = S1.line_id
 LEFT JOIN
-	-- Seats2テーブルに別名S3を付けて開始座席と終了座席の間の座席を表す
 	Seats2 S3
 ON
-		-- S3の座席番号がS1とS2の座席番号の間にあることを確認
 		S3.seat BETWEEN S1.seat AND S2.seat
 	AND
-		-- S3の座席が開始座席と同じline_idであることを確認
 		S3.line_id = S1.line_id
 	AND (
-			-- S3の座席が空席でないこと、または開始座席と異なるline_idであることを確認
 			S3.status <> '空'
 		OR
 			S3.line_id <> S1.line_id
 	)
 GROUP BY
-	-- 開始座席、終了座席、開始座席のline_idでグループ化
 	S1.seat,
 	S2.seat,
 	S1.line_id
 HAVING
-	-- グループ内のS3の座席数が0、つまり開始座席と終了座席の間に空席以外の座席、
-	-- または開始座席と異なるline_idの座席がないことを確認
 	COUNT(S3.seat) = 0
 ;
 

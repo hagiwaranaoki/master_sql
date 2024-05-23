@@ -1,16 +1,11 @@
+-- class_bテーブルからclass_aテーブルにデータを挿入し、重複するキーが存在する場合はclass_aテーブルのnameを更新
 INSERT INTO 
-	-- class_aテーブルのid列とname列に挿入
 	class_a (id, name)
 SELECT 
-	-- class_bテーブルのid列を選択
 	id, 
-	-- class_bテーブルのname列を選択
 	name
 FROM 
-	-- class_bテーブルから選択
 	class_b
--- 重複するキーが存在する場合は、以下の更新を実行
 ON DUPLICATE KEY UPDATE
-	-- class_aテーブルのname列をclass_bテーブルのname列で更新
 	class_a.name = class_b.name
 ;

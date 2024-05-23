@@ -1,12 +1,9 @@
+-- serverloadsampleテーブルから各サーバーの日付と、そのサーバーの負荷値の合計を取得する
 SELECT
-	-- serverカラムを指定
 	server,
-	-- sample_dateカラムを指定
 	sample_date,
-	-- パーティションを指定せずにload_valの合計値を算出して列の名前はsum_loadにする
 	SUM(load_val) OVER () AS sum_load
 FROM
-	-- serverloadsampleテーブルを指定
 	serverloadsample
 ;
 

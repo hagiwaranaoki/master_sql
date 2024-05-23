@@ -1,27 +1,20 @@
+-- 店舗の現在在庫数と足りなかった商品の数を表示
 SELECT 
-	-- 店舗名カラムを選択
 	si.shop,
-	-- 各店舗のアイテム数をカウント
 	COUNT(si.item) AS my_item_cnt,
 	(
 		SELECT
-			-- 全アイテムの総数をサブクエリで取得 
 			COUNT(item) 
 		FROM 
-			-- itemsテーブルを選択
 			items
-	-- 全アイテム数から各店舗のアイテム数を引いた差
 	) - COUNT(si.item) AS diff_cnt
 FROM 
-	-- shopitemsテーブルからデータを取得
+
 	shopitems si
 INNER JOIN 
-	-- itemsテーブルと内部結合
 	items i
-ON 
-	-- アイテムで結合条件を指定
+ON
 	si.item = i.item
-GROUP BY 
-	-- 店舗ごとにグループ化
+GROUP BY
 	si.shop
 ;

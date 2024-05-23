@@ -1,22 +1,16 @@
-SELECT 
-	-- sequenceテーブルのseqカラムを選択
+-- sequenceテーブルから1から12までの数値のうち、seqtblテーブルに存在しない数値を抽出して昇順に並べる
+SELECT
 	seq.seq
-FROM 
-	-- sequenceテーブルをseqというエイリアスで指定
+FROM
 	sequence seq
-LEFT JOIN 
-	-- seqtblテーブルをtblというエイリアスで指定し、LEFT JOINで結合
+LEFT JOIN
 	seqtbl tbl 
-ON 
-	-- sequenceテーブルのseqカラムとseqtblテーブルのseqカラムが一致する行を結合
+ON
 	seq.seq = tbl.seq
-WHERE 
-		-- sequenceテーブルのseqカラムが1から12の範囲内であることを指定
+WHERE
 		seq.seq BETWEEN 1 AND 12
-	AND 
-		-- seqtblテーブルのseqカラムがNULLであることを指定（欠番の条件）
+	AND
 		tbl.seq IS NULL
-ORDER BY 
-	-- 結果をsequenceテーブルのseqカラムの昇順で並び替え
+ORDER BY
 	seq.seq
 ;

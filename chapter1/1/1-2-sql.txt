@@ -1,65 +1,45 @@
+-- 性別ごとに全国の人口、徳島、香川、愛媛、高知の各県の人口、そして四国地方全体の人口を集計
 SELECT
-	-- 性別カラムのcase文を開始
 	CASE sex 
-		-- 1の時男を返す
+		-- 1は男を表す
 		WHEN 1 THEN '男'
-		-- 2の時女を返す
+		-- 2は女を表す
 		WHEN 2 THEN '女'
-		-- それ以外の場合その他を返す
 		ELSE 'その他'
-	-- caseを終了して列名を性別にする
 	END AS 性別,
-	-- 人口の合計を求めて全国の名前を付ける
 	SUM(population) AS 全国,
 	SUM(
 		CASE 
-			-- pref_nameが徳島の場合人口の合計を加算
 			WHEN pref_name = '徳島' THEN population 
-			-- それ以外の場合加算しない
 			ELSE 0 
 		END
-	-- 列名に徳島の名前を付ける
 	) AS 徳島,
 	SUM(
 		CASE 
-			-- pref_nameが香川の場合人口の合計を加算
 			WHEN pref_name = '香川' THEN population 
-			-- それ以外の場合加算しない
 			ELSE 0 
 		END
-	-- 列名に香川の名前を付ける
 	) AS 香川,
 	SUM(
-		CASE 
-			-- pref_nameが愛媛の場合人口の合計を加算
+		CASE
 			WHEN pref_name = '愛媛' THEN population
-			-- それ以外の場合加算しない
 			ELSE 0 
 		END
-	-- 列の名前を愛媛にする
 	) AS 愛媛,
 	SUM(
 		CASE
-			-- pref_nameが高知の場合人口の合計を加算
 			WHEN pref_name = '高知' THEN population
-			-- それ以外の場合加算しない
 			ELSE 0 
 		END
-	-- 列名を高知にする
 	) AS 高知,
 	SUM(
 		CASE 
-			-- pref_nameが徳島、香川、愛媛、高知の場合人口を加算
 			WHEN pref_name IN ('徳島', '香川', '愛媛', '高知') THEN population
-			-- それ以外の場合加算しない 
 			ELSE 0 
 		END
-	-- 列名に四国（再掲）の名前を付ける
 	) AS 四国（再掲）
 FROM 
-	-- poptbl2テーブルを指定
 	poptbl2
 GROUP BY 
-	-- 性別でグループ分けする
 	sex
 ;
