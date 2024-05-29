@@ -1,0 +1,36 @@
+-- tblageとtblsexの全ての年齢区分と性別の組み合わせを生成し、それを基にtblpopテーブルから東北地方（青森、秋田）と関東地方（東京、千葉）の人口を集計し、年齢区分と性別ごとに表示
+SELECT
+	master.age_class,
+	master.sex_cd,
+	SUM(
+		CASE
+			WHEN p.pref_name IN ('青森', '秋田') THEN p.population
+			ELSE 0
+		END
+	) AS pop_tohoku,
+	SUM(
+		CASE
+			WHEN p.pref_name IN ('東京', '千葉') THEN p.population
+			ELSE 0 
+		END
+	) AS pop_kanto
+FROM
+	(
+		SELECT DISTINCT 
+			a.age_class, 
+			s.sex_cd
+		FROM
+			tblage a 
+		CROSS JOIN
+			tblsex s
+	) AS master
+LEFT OUTER JOIN
+	tblpop p
+ON 
+		master.age_class = p.age_class
+	AND
+		master.sex_cd = p.sex_cd
+GROUP BY
+	master.age_class,
+	master.sex_cd
+;

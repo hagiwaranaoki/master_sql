@@ -1,0 +1,22 @@
+-- personnelテーブルから各従業員の名前とその従業員が持つ子供の数を計算し、子供の数が多い順に並べて表示する
+SELECT
+	EMP.employee,
+	(
+		CASE
+			WHEN EMP.child_1 IS NOT NULL THEN 1 
+			ELSE 0
+		END +
+		CASE
+			WHEN EMP.child_2 IS NOT NULL THEN 1
+			ELSE 0
+		END +
+		CASE
+			WHEN EMP.child_3 IS NOT NULL THEN 1
+			ELSE 0
+		END
+	) AS child_cnt 
+FROM
+	personnel EMP
+ORDER BY
+	child_cnt DESC
+;

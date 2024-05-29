@@ -1,0 +1,19 @@
+-- 全員が9月中に提出済みの学部を表示する
+SELECT 
+	dpt
+FROM 
+	students
+GROUP BY 
+	dpt
+HAVING 
+		COUNT(*) = SUM(
+			CASE
+				-- 9月の場合に1を返す
+				WHEN MONTH(sbmt_date) = 9 THEN 1
+				-- それ以外の場合に0を返す
+				ELSE 0
+			END
+		)
+	AND
+		COUNT(sbmt_date) = COUNT(*)
+;

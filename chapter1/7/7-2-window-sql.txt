@@ -1,0 +1,33 @@
+-- ウィンドウ関数を用いて3件の移動平均を求め、3件に満たない場合はNULL結果をNULLとする
+SELECT
+	prc_date,
+	prc_amt,
+	CASE
+		WHEN count < 3 THEN NULL
+	ELSE
+		CASE
+			WHEN mvg_avg >= 0 THEN FLOOR(mvg_avg)
+			ELSE CEILING(mvg_avg)
+		END
+	END AS mvg_avg
+FROM
+	(
+		SELECT
+			prc_date,
+			prc_amt,
+			AVG(prc_amt)
+			OVER(
+				ORDER BY
+					prc_date
+				ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+			) mvg_avg,
+			COUNT(*)
+			OVER(
+				ORDER BY
+					prc_date
+				ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+			) AS count
+		FROM 
+			accounts
+	) TMP
+;

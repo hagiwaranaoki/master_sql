@@ -1,0 +1,19 @@
+-- sequenceテーブルの数値がseqtblテーブルに存在しないことを確認するために、NOT EXISTSを使用
+SELECT
+	seq.seq
+FROM
+	sequence seq
+WHERE
+		seq.seq BETWEEN 1 AND 12
+	AND
+		NOT EXISTS (
+			SELECT
+				1 
+			FROM
+				seqtbl tbl
+			WHERE
+				tbl.seq = seq.seq
+		)
+ORDER BY
+	seq.seq
+;

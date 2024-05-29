@@ -1,0 +1,38 @@
+-- valがNULLまたは1以外の値を持つ行が存在しないキーを選択する
+SELECT DISTINCT
+	t1.key
+FROM 
+	arraytbl2 t1
+WHERE NOT EXISTS (
+    SELECT 
+	1
+    FROM 
+	arraytbl2 t2
+    WHERE 
+		t2.key = t1.key 
+	AND 
+		(
+				t2.val IS NULL 
+			OR 
+				t2.val <> 1
+		)
+)
+;
+
+
+-- keyごとにグループ化し、valの最小値と最大値が1であり、かつvalにNULLが含まれていないキーを選択する
+SELECT 
+	`key`
+FROM 
+	arraytbl2
+GROUP BY 
+	`key`
+HAVING 
+		COUNT(*) = COUNT(val) 
+	AND 
+		-- valの最小値が1
+		MIN(val) = 1 
+	AND 
+		-- valの最大値が1
+		MAX(val) = 1
+;

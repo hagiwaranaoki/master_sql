@@ -1,0 +1,10 @@
+-- xとyの最大値を取得
+SELECT 
+	greatest_key,
+	CASE 
+		WHEN x < y THEN y
+		ELSE x
+	END AS greatest
+FROM 
+	greatests
+;

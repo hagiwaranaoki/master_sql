@@ -1,0 +1,9 @@
+-- seqtblテーブルに歯抜けがある場合は歯抜けありを返してない場合は歯抜けなしを返す
+SELECT 
+	CASE
+		WHEN COUNT(*) <> MAX(seq) THEN '歯抜けあり'
+		ELSE '歯抜けなし'
+	END AS gap
+FROM
+	seqtbl
+;

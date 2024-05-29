@@ -1,0 +1,11 @@
+-- class_bテーブルからclass_aテーブルにデータを挿入し、重複するキーが存在する場合はclass_aテーブルのnameを更新
+INSERT INTO 
+	class_a (id, name)
+SELECT 
+	id, 
+	name
+FROM 
+	class_b
+ON DUPLICATE KEY UPDATE
+	class_a.name = class_b.name
+;

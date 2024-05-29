@@ -1,0 +1,16 @@
+-- sequenceテーブルから1から12までの数値のうち、seqtblテーブルに存在しない数値を抽出して昇順に並べる
+SELECT
+	seq.seq
+FROM
+	sequence seq
+LEFT JOIN
+	seqtbl tbl 
+ON
+	seq.seq = tbl.seq
+WHERE
+		seq.seq BETWEEN 1 AND 12
+	AND
+		tbl.seq IS NULL
+ORDER BY
+	seq.seq
+;

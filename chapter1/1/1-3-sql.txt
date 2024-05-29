@@ -1,0 +1,18 @@
+-- key列をBADCの順番で並び替える
+SELECT
+	`key`
+FROM
+	greatests
+ORDER BY
+	CASE `key`
+		-- 1番目にする
+		WHEN 'B' THEN 1
+		-- 2番目にする
+		WHEN 'A' THEN 2
+		-- 3番目にする
+		WHEN 'D' THEN 3
+		-- 4番目にする
+		WHEN 'C' THEN 4
+		ELSE NULL
+	END
+;

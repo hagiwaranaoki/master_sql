@@ -1,0 +1,20 @@
+-- 店舗の現在在庫数と足りなかった商品の数を表示
+SELECT 
+	si.shop,
+	COUNT(si.item) AS my_item_cnt,
+	(
+		SELECT
+			COUNT(item) 
+		FROM 
+			items
+	) - COUNT(si.item) AS diff_cnt
+FROM 
+
+	shopitems si
+INNER JOIN 
+	items i
+ON
+	si.item = i.item
+GROUP BY
+	si.shop
+;

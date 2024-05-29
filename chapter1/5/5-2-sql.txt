@@ -1,0 +1,27 @@
+-- ステップ番号が1以下でステータスが「完了」、またはステップ番号が1より大きくステータスが「待機」という条件を満たすプロジェクトをprojectsテーブルから選択
+SELECT 
+	*
+FROM 
+	projects p1
+WHERE 
+	'○' = ALL(
+		SELECT
+			CASE 
+				WHEN
+						step_nbr <= 1 
+					AND 
+						status = '完了' 
+				THEN '○'
+				WHEN
+						step_nbr > 1 
+					AND 
+						status = '待機'
+				THEN '○'
+				ELSE '×' 
+			END
+		FROM
+			projects p2
+		WHERE 
+			p1.project_id = p2. project_id
+	)
+;

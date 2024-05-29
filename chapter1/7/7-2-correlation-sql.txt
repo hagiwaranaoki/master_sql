@@ -1,0 +1,31 @@
+-- 相関サブクエリを用いて3件の移動平均を求め、3件に満たない場合はNULL結果をNULLとする
+SELECT
+	prc_date,
+	a1.prc_amt,
+	(
+		SELECT 
+			CASE
+				WHEN AVG(prc_amt) >= 0 THEN FLOOR(AVG(prc_amt))
+				ELSE CEILING(AVG(prc_amt))
+			END
+		FROM
+			accounts a2
+		WHERE 
+				a1.prc_date >= a2.prc_date
+			AND 
+				(
+					SELECT
+						COUNT(*)
+					FROM
+						accounts a3
+					WHERE 
+						a3.prc_date BETWEEN a2.prc_date AND a1.prc_date 
+				) <= 3
+		HAVING 
+			COUNT(*) = 3
+	) AS mvg_sum
+FROM
+	accounts a1
+ORDER BY 
+	prc_date
+;

@@ -1,0 +1,27 @@
+-- 連続する座席を表す変数に任意の値を設定
+SET @head_cnt = 3;
+
+-- 折り返しのある座席で連続する空席の開始座席と終了座席を取得
+SELECT
+	S1.seat AS start_seat, 
+	'～', 
+	S2.seat AS end_seat
+FROM
+	Seats S1
+JOIN
+	Seats S2 
+ON
+	S2.seat = S1.seat + (@head_cnt - 1)
+LEFT JOIN
+	Seats S3 
+ON
+		S3.seat BETWEEN S1.seat AND S2.seat 
+	AND
+		S3.status <> '空'
+GROUP BY
+	S1.seat, 
+	S2.seat
+HAVING
+	COUNT(S3.seat) = 0
+;
+

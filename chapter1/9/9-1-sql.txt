@@ -1,0 +1,32 @@
+-- tbl_aとtbl_bの全行をUNIONで結合し、その結合結果の行数が各テーブルの行数と一致するかどうかをチェックする
+SELECT
+	CASE
+		WHEN
+				COUNT(*) = (
+						SELECT 
+							COUNT(*) 
+						FROM 
+							tbl_a
+				)
+			AND 
+				COUNT(*) = (
+						SELECT 
+							COUNT(*) 
+						FROM 
+							tbl_b
+				) THEN '等しい'
+		ELSE '異なる'
+	END AS result
+FROM
+	(
+		SELECT 
+			*
+		FROM 
+			tbl_a
+		UNION
+			SELECT 
+				*
+			FROM 
+				tbl_b
+	) TMP
+;

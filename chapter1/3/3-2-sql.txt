@@ -1,0 +1,51 @@
+-- 一時的なテーブルtemporary_productsを作成し、productsテーブルから重複を排除したデータを格納する
+CREATE TABLE
+	temporary_products
+SELECT
+	name,
+	price,
+	ROW_NUMBER() 
+	OVER (
+		ORDER BY
+			name, 
+			price
+	) AS row_number
+FROM 
+(
+	SELECT
+		name, 
+		price,
+		ROW_NUMBER() 
+		OVER (
+			PARTITION BY 
+				name, 
+				price 
+			ORDER BY
+				name
+		) AS row_number
+	FROM 
+		products
+) AS RankedProducts
+WHERE
+	row_number = 1
+;
+
+-- productsテーブルの全データを削除する
+DELETE FROM
+	products
+;
+
+-- 一時的なテーブルから一意のデータをproductsテーブルに挿入
+INSERT INTO 
+	products (name, price)
+SELECT
+	name, 
+	price
+FROM 
+	temporary_products
+;
+
+-- 一時的なテーブルtemporary_productsを削除する
+DROP TABLE
+	temporary_products
+;

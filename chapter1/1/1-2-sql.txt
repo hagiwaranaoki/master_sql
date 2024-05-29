@@ -1,0 +1,45 @@
+-- 性別ごとに全国の人口、徳島、香川、愛媛、高知の各県の人口、そして四国地方全体の人口を集計
+SELECT
+	CASE sex 
+		-- 1は男を表す
+		WHEN 1 THEN '男'
+		-- 2は女を表す
+		WHEN 2 THEN '女'
+		ELSE 'その他'
+	END AS 性別,
+	SUM(population) AS 全国,
+	SUM(
+		CASE 
+			WHEN pref_name = '徳島' THEN population 
+			ELSE 0 
+		END
+	) AS 徳島,
+	SUM(
+		CASE 
+			WHEN pref_name = '香川' THEN population 
+			ELSE 0 
+		END
+	) AS 香川,
+	SUM(
+		CASE
+			WHEN pref_name = '愛媛' THEN population
+			ELSE 0 
+		END
+	) AS 愛媛,
+	SUM(
+		CASE
+			WHEN pref_name = '高知' THEN population
+			ELSE 0 
+		END
+	) AS 高知,
+	SUM(
+		CASE 
+			WHEN pref_name IN ('徳島', '香川', '愛媛', '高知') THEN population
+			ELSE 0 
+		END
+	) AS 四国（再掲）
+FROM 
+	poptbl2
+GROUP BY 
+	sex
+;

@@ -1,0 +1,10 @@
+-- serverloadsampleテーブルから各サーバーの日付と、そのサーバーの負荷値の合計を取得する
+SELECT
+	server,
+	sample_date,
+	SUM(load_val) OVER () AS sum_load
+FROM
+	serverloadsample
+;
+
+パーティションの指定をしていないので、sum_loadがすべてのレコードのsum_loadの合計値で固定されて出力される
