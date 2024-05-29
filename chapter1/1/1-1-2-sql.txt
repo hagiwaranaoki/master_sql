@@ -1,6 +1,6 @@
 -- x,y,zの最大値を求める
 SELECT
-	`key`,
+	greatest_key,
 	CASE
 		WHEN
 			CASE
@@ -15,4 +15,5 @@ SELECT
 			END
 		END AS greatest
 FROM 
-	greatests;
+	greatests
+;
